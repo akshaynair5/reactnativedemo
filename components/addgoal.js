@@ -1,11 +1,31 @@
-import { StyleSheet, Text, TextInput, View ,Button } from "react-native";
+import { useState } from "react";
+import { StyleSheet, Text, TextInput, View ,Button,ScrollView } from "react-native";
 
 function Addgoal(){
+    const [goals,setGoals] = useState([])
+    const [currentGoal,setCG] = useState('')
+    const HandleChange =(enteredText)=>{
+        setCG(enteredText)
+    }
+    const addgoal=()=>{
+        setGoals([...goals,{text:`${currentGoal}`,id:'1'}])
+    }
     return(
-        <View style={styles.AddgoalContainer}>
-            <TextInput placeholder="Enter New Goal" style={styles.AGinp}></TextInput>
-            <Button title='Add New Goal'/>
-        </View>
+            <View style={styles.AddgoalContainer}>
+                <TextInput placeholder="Enter New Goal" style={styles.AGinp} onChangeText={HandleChange}></TextInput>
+                <Button title='Add New Goal' onPress={addgoal}/>
+                <ScrollView style={styles.goalList}>
+                    {
+                        goals.map((item)=>(
+                            <View style={styles.itemTab} key={item.id}>
+                                <Text style={styles.itemTabtext}>{item.id}</Text>
+                                <Text>{item.text}</Text>
+                            </View>
+                            
+                        ))
+                    }
+                </ScrollView>
+            </View>
     )
 }
 
@@ -26,4 +46,19 @@ const styles = StyleSheet.create({
         borderRadius:15,
         marginBottom:20,
     },
+    itemTab:{
+        backgroundColor:'white',
+        marginTop:15,
+        padding:15,
+        borderRadius:15,
+        flex:1,
+        flexDirection:'row'
+    },
+    goalList:{
+        height:'80%'
+    },
+    itemTabtext:{
+        fontWeight:'700',
+        fontSize:25
+    }
 })
